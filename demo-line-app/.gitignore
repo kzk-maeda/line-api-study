@@ -17,6 +17,7 @@ var/
 *.egg
 /node_modules/
 /__pycache__/
+/flask/__pycache__/
 
 # Serverless directories
 .serverless
