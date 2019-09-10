@@ -29,6 +29,7 @@ handler = WebhookHandler(SECRET)
 @app.route("/health")
 def health_check():
   app.logger.info("Health Check : OK" )
+  print("Health Check : OK" )
   return "OK"
 
 
@@ -40,6 +41,7 @@ def callback():
   # get request body as text
   body = request.get_data(as_text=True)
   app.logger.info("Request_body : " + body)
+  print("Request_body : " + body)
 
   # handle webhook body
   try:
