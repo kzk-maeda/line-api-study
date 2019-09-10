@@ -3,3 +3,4 @@ Flask-Cors==3.0.4
 future==0.17.1
 jsonschema==2.6.0
 simplejson==3.16.0
+line-bot-sdk==1.14.0

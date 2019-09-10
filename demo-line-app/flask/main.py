@@ -1,29 +1,60 @@
-from flask import Flask, redirect, url_for, request, logging, jsonify
+import json
+
+from flask import Flask, request, abort
+
+from linebot import (
+  LineBotApi, WebhookHandler
+)
+
+from linebot.exceptions import (
+  InvalidSignatureError
+)
+
+from linebot.models import (
+  MessageEvent, TextMessage, TextSendMessage
+)
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-  # app.logger.warn('warning')
-  return jsonify(name='John', email='john@mail.com')
 
-@app.route('/', methods=['POST'])
-def post_json():
-  json_data = request.get_json()
-  # app.logger.info(json_fata)
-  return jsonify(json_data)
+# Read Keys
+with open('env.json', 'r') as f:
+  data = json.load(f)
+  ACCESS_TOKEN = data.get('access_token')
+  SECRET = data.get('secret')
 
-@app.route('/my', methods=['GET'])
-def my_route_get():
-  return 'get!'
+line_bot_api = LineBotApi(ACCESS_TOKEN)
+handler = WebhookHandler(SECRET)
 
-@app.route('/my', methods=['POST'])
-def my_route_post():
-  return 'post!'
+@app.route("/health")
+def health_check():
+  app.logger.info("Health Check : OK" )
+  return "OK"
 
-@app.route('/hello')
-def hello():
-  return redirect(url_for('index'))
+
+@app.route("/callback", methods=['POST'])
+def callback():
+  # get X-Line-Signature header value
+  signature = request.headers['X-Line-Signature']
+
+  # get request body as text
+  body = request.get_data(as_text=True)
+  app.logger.info("Request_body : " + body)
+
+  # handle webhook body
+  try:
+    handler.handle(body, signature)
+  except InvalidSignatureError:
+    abort(400)
+  
+  return 'OK'
+
+@handler.add(MessageEvent, message=TextMessage)
+def handle_message(event):
+  line_bot_api.reply_message(
+    event.reply_token,
+    TextSendMessage(text=event.message.text)
+  )
 
 if __name__ == "__main__":
     app.run()
