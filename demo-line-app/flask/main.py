@@ -28,7 +28,7 @@ handler = WebhookHandler(SECRET)
 
 @app.route("/health")
 def health_check():
-  app.logger.info("Health Check : OK" )
+  # app.logger.info("Health Check : OK" )
   print("Health Check : OK" )
   return "OK"
 
@@ -40,7 +40,7 @@ def callback():
 
   # get request body as text
   body = request.get_data(as_text=True)
-  app.logger.info("Request_body : " + body)
+  # app.logger.info("Request_body : " + body)
   print("Request_body : " + body)
 
   # handle webhook body
@@ -57,8 +57,7 @@ def handle_message(event):
   #   event.reply_token,
   #   TextSendMessage(text=event.message.text)
   # )
-  contents_string = """
-  {
+  contents_string = {
     "type": "bubble",
     "header": {
       "type": "box",
@@ -114,12 +113,12 @@ def handle_message(event):
     },
     "styles": {
       "footer": {
-        "separator": false
+        "separator": False
       }
     }
   }
-  """
-  message = FlexSendMessage(alt_text="hello", contents=json.loads(contents_string))
+  
+  message = FlexSendMessage(alt_text="hello", contents=contents_string)
 
   line_bot_api.reply_message(
     event.reply_token,
