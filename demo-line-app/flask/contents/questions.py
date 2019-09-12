@@ -43,5 +43,6 @@ class QuestionClass():
           }
         }
       }
+
   def create_question(self):
     return self.base_bubble

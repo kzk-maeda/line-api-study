@@ -12,7 +12,7 @@ from linebot.exceptions import (
 )
 
 from linebot.models import (
-  MessageEvent, TextMessage, TextSendMessage, FlexSendMessage
+  MessageEvent, PostbackEvent, TextMessage, TextSendMessage, FlexSendMessage
 )
 
 app = Flask(__name__)
@@ -52,6 +52,7 @@ def callback():
   
   return 'OK'
 
+# 初回メッセージを受け取ったときに実行
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
   
@@ -86,6 +87,59 @@ def handle_message(event):
     event.reply_token,
     message
   )
+
+# Postbackを受け取った時に実行
+@handler.add(PostbackEvent)
+def handle_postback(event):
+
+  print(event)
+  if event.postback.data == "action=store&storeId=000000":
+    question_text = "あなたの年齢を教えてください"
+    contents_list = [
+      {
+        "type": "button",
+        "style": "primary",
+        "action": {
+          "type": "postback",
+          "label": "20代",
+          "data": "action=store&age=20",
+          "displayText":"20代"
+        }
+      },
+      {
+        "type": "button",
+        "style": "primary",
+        "action": {
+          "type": "postback",
+          "label": "30代",
+          "data": "action=store&age=30",
+          "displayText":"30代"
+        }
+      },
+      {
+        "type": "button",
+        "style": "primary",
+        "action": {
+          "type": "postback",
+          "label": "40代",
+          "data": "action=store&age=40",
+          "displayText":"40代"
+        }
+      }
+    ]
+    contents = q.QuestionClass(question_text, contents_list)
+    message = FlexSendMessage(alt_text="hello", contents=contents.create_question())
+
+    line_bot_api.reply_message(
+      event.reply_token,
+      message
+    )
+  else:
+    message = "Done"
+    line_bot_api.reply_message(
+      event.reply_token,
+      message
+    )
 
 if __name__ == "__main__":
     app.run()
