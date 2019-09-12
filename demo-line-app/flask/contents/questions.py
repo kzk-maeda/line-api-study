@@ -1,9 +1,7 @@
 import json
 
 class QuestionClass():
-  def __init__(self):
-    self.question_text = ""
-    self.contents_list = []
+  def __init__(self, question_text, contents_list):
     self.base_bubble = {
       "type": "bubble",
         "header": {
@@ -12,7 +10,7 @@ class QuestionClass():
           "contents": [
             {
               "type": "text",
-              "text": self.question_text,
+              "text": question_text,
               "color": "#ffffff",
               "align": "start",
               "size": "md",
@@ -32,7 +30,7 @@ class QuestionClass():
               "type": "box",
               "layout": "vertical",
               "spacing": "md",
-              "contents": self.contents_list,
+              "contents": contents_list,
               "flex": 1
             }
           ],
@@ -45,3 +43,5 @@ class QuestionClass():
           }
         }
       }
+  def create_question(self):
+    return self.base_bubble

@@ -1,4 +1,5 @@
 import json
+import contents.questions as q
 
 from flask import Flask, request, abort
 
@@ -53,76 +54,36 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-  # line_bot_api.reply_message(
-  #   event.reply_token,
-  #   TextSendMessage(text=event.message.text)
-  # )
-  contents_string = {
-    "type": "bubble",
-    "header": {
-      "type": "box",
-      "layout": "vertical",
-      "contents": [
-        {
-          "type": "text",
-          "text": "あなたの性別を教えてください",
-          "color": "#ffffff",
-          "align": "start",
-          "size": "md",
-          "gravity": "center"
-        }
-      ],
-      "backgroundColor": "#27ACB2",
-      "paddingTop": "19px",
-      "paddingAll": "12px",
-      "paddingBottom": "16px"
+  
+  question_text = "あなたの性別を教えてください"
+  contents_list = [
+    {
+      "type": "button",
+      "style": "primary",
+      "action": {
+        "type": "postback",
+        "label": "Man",
+        "data": "action=store&storeId=000000",
+        "displayText":"Man"
+      }
     },
-    "body": {
-      "type": "box",
-      "layout": "vertical",
-      "contents": [
-        {
-          "type": "box",
-          "layout": "vertical",
-          "spacing": "md",
-          "contents": [
-            {
-              "type": "button",
-              "style": "primary",
-              "action": {
-                "type": "uri",
-                "label": "Man",
-                "uri": "https://example.com"
-              }
-            },
-            {
-              "type": "button",
-              "style": "primary",
-              "action": {
-                "type": "uri",
-                "label": "Woman",
-                "uri": "https://example.com"
-              }
-            }
-          ],
-          "flex": 1
-        }
-      ],
-      "spacing": "md",
-      "paddingAll": "12px"
-    },
-    "styles": {
-      "footer": {
-        "separator": False
+    {
+      "type": "button",
+      "style": "primary",
+      "action": {
+        "type": "postback",
+        "label": "Woman",
+        "data": "action=store&storeId=000000",
+        "displayText":"Woman"
       }
     }
-  }
+  ]
+  contents = q.QuestionClass(question_text, contents_list)
   
-  message = FlexSendMessage(alt_text="hello", contents=contents_string)
+  message = FlexSendMessage(alt_text="hello", contents=contents.create_question())
 
   line_bot_api.reply_message(
     event.reply_token,
-    # TextSendMessage(text="自動応答メッセージ")
     message
   )
 
