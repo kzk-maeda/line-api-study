@@ -11,7 +11,7 @@ from linebot.exceptions import (
 )
 
 from linebot.models import (
-  MessageEvent, TextMessage, TextSendMessage
+  MessageEvent, TextMessage, TextSendMessage, FlexSendMessage
 )
 
 app = Flask(__name__)
@@ -53,9 +53,78 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+  # line_bot_api.reply_message(
+  #   event.reply_token,
+  #   TextSendMessage(text=event.message.text)
+  # )
+  contents_string = """
+  {
+    "type": "bubble",
+    "header": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "text",
+          "text": "あなたの性別を教えてください",
+          "color": "#ffffff",
+          "align": "start",
+          "size": "md",
+          "gravity": "center"
+        }
+      ],
+      "backgroundColor": "#27ACB2",
+      "paddingTop": "19px",
+      "paddingAll": "12px",
+      "paddingBottom": "16px"
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "box",
+          "layout": "vertical",
+          "spacing": "md",
+          "contents": [
+            {
+              "type": "button",
+              "style": "primary",
+              "action": {
+                "type": "uri",
+                "label": "Man",
+                "uri": "https://example.com"
+              }
+            },
+            {
+              "type": "button",
+              "style": "primary",
+              "action": {
+                "type": "uri",
+                "label": "Woman",
+                "uri": "https://example.com"
+              }
+            }
+          ],
+          "flex": 1
+        }
+      ],
+      "spacing": "md",
+      "paddingAll": "12px"
+    },
+    "styles": {
+      "footer": {
+        "separator": false
+      }
+    }
+  }
+  """
+  message = FlexSendMessage(alt_text="hello", contents=json.loads(contents_string))
+
   line_bot_api.reply_message(
     event.reply_token,
-    TextSendMessage(text=event.message.text)
+    # TextSendMessage(text="自動応答メッセージ")
+    message
   )
 
 if __name__ == "__main__":
