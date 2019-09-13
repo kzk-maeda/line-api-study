@@ -55,33 +55,11 @@ def callback():
 # 初回メッセージを受け取ったときに実行
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+
+  question = q.QuestionClass()
+  contents = question.create_question_marriged()
   
-  question_text = "あなたの性別を教えてください"
-  contents_list = [
-    {
-      "type": "button",
-      "style": "primary",
-      "action": {
-        "type": "postback",
-        "label": "Man",
-        "data": "action=store&storeId=000000",
-        "displayText":"Man"
-      }
-    },
-    {
-      "type": "button",
-      "style": "primary",
-      "action": {
-        "type": "postback",
-        "label": "Woman",
-        "data": "action=store&storeId=000000",
-        "displayText":"Woman"
-      }
-    }
-  ]
-  contents = q.QuestionClass(question_text, contents_list)
-  
-  message = FlexSendMessage(alt_text="hello", contents=contents.create_question())
+  message = FlexSendMessage(alt_text="hello", contents=contents)
 
   line_bot_api.reply_message(
     event.reply_token,
@@ -94,41 +72,11 @@ def handle_postback(event):
 
   print(event)
   if event.postback.data == "action=store&storeId=000000":
-    question_text = "あなたの年齢を教えてください"
-    contents_list = [
-      {
-        "type": "button",
-        "style": "primary",
-        "action": {
-          "type": "postback",
-          "label": "20代",
-          "data": "action=store&age=20",
-          "displayText":"20代"
-        }
-      },
-      {
-        "type": "button",
-        "style": "primary",
-        "action": {
-          "type": "postback",
-          "label": "30代",
-          "data": "action=store&age=30",
-          "displayText":"30代"
-        }
-      },
-      {
-        "type": "button",
-        "style": "primary",
-        "action": {
-          "type": "postback",
-          "label": "40代",
-          "data": "action=store&age=40",
-          "displayText":"40代"
-        }
-      }
-    ]
-    contents = q.QuestionClass(question_text, contents_list)
-    message = FlexSendMessage(alt_text="hello", contents=contents.create_question())
+
+    question = q.QuestionClass()
+    contents = question.create_question_marriged()
+    
+    message = FlexSendMessage(alt_text="hello", contents=contents)
 
     line_bot_api.reply_message(
       event.reply_token,
