@@ -1,7 +1,7 @@
 import json
 import contents.questions as q
 import contents.wellcome as wb
-import lib.mod_event_data as mod
+import library.mod_event_data as mod
 
 from flask import Flask, request, abort
 
