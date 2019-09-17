@@ -36,10 +36,14 @@ class WellcomeClass():
                   "type": "button",
                   "style": "primary",
                   "action": {
-                    "type": "postback",
+                  #   "type": "postback",
+                  #   "label": "診断スタート！",
+                  #   "data": "diagnosis=start&next_question=1",
+                  #   "displayText":"スタート！"
+                  # }
+                    "type": "uri",
                     "label": "診断スタート！",
-                    "data": "diagnosis=start&next_question=1",
-                    "displayText":"スタート！"
+                    "uri": "line://app/1619401802-dAP02MZ4"
                   }
                 }
               ],

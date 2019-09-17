@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://unpkg.com/vue@2.5.17"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <title>InputForm</title>
+</head>
+<body>
+  <div id="app">
+    <form action="#" method="post">
+      <ul>
+        <li id="age">
+          {{ item.name }}：<input type="number" v-on:input="item.value = $event.target.value" v-bind:value="item.value">
+        </li>
+        <li id="height">
+          {{ item.name }}：<input type="number" v-on:input="item.value = $event.target.value" v-bind:value="item.value">
+        </li>
+        <li id="weight">
+          {{ item.name }}：<input type="number" v-on:input="item.value = $event.target.value" v-bind:value="item.value">
+        </li>
+      </ul>
+      <button id="button" type="submit">送信</button>
+    </form>
+  </div>
+</body>
+<script src="./app.js"></script>
+</html>

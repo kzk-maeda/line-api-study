@@ -163,5 +163,12 @@ def handle_postback(event):
     contents = question.create_question_terms_of_service()
     send_line_api(event, contents)
 
+# LIFFからPOSTを受け取った時に実行
+@app.route("/liff")
+def post_from_liff():
+  # app.logger.info("Health Check : OK" )
+  print("Health Check : OK" )
+  return "OK"
+
 if __name__ == "__main__":
     app.run()

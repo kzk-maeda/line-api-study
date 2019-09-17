@@ -473,7 +473,7 @@ class QuestionClass():
   
   # 6-6 : AMHの数値入力
   def create_question_amh_result(self):
-    self.question_text = "AMH（卵巣年齢）血液検査の数値を入力してください"
+    self.question_text = "AMH検査の数値を入力してください"
     self.contents_items = [
       {
         "label_text": "dummy",
