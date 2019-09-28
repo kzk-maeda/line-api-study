@@ -92,11 +92,11 @@ def handle_postback(event):
   answer_param = data.get('answer')
   print('{} / {} / {}'.format(user_id, question_param, answer_param))
   if answer_param is not None:
-    data = {}
-    data['answer'] = answer_param
-    data['score'] = 0
-    data['updated'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    ddb.register_answer(user_id, question_param, answer_param)
+    answer_data = {}
+    answer_data['answer'] = answer_param
+    answer_data['score'] = 0
+    answer_data['updated'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    ddb.register_answer(user_id, question_param, answer_data)
 
   next = data.get('next_question')
   # 1 : 結婚しているかどうか
