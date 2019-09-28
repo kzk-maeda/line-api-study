@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 import contents.questions as q
 import contents.wellcome as wb
 import library.mod_event_data as mod
@@ -91,6 +92,10 @@ def handle_postback(event):
   answer_param = data.get('answer')
   print('{} / {} / {}'.format(user_id, question_param, answer_param))
   if answer_param is not None:
+    data = {}
+    data['answer'] = answer_param
+    data['score'] = 0
+    data['updated'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     ddb.register_answer(user_id, question_param, answer_param)
 
   next = data.get('next_question')
