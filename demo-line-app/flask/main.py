@@ -2,6 +2,7 @@ import json
 import contents.questions as q
 import contents.wellcome as wb
 import library.mod_event_data as mod
+import library.operate_dynamodb as ddb
 
 from flask import Flask, request, abort
 
@@ -82,9 +83,16 @@ def send_line_api(event, contents, alt_text="hello"):
 def handle_postback(event):
   question = q.QuestionClass()
 
-  print(event)
+  # print(event)
   # event.postback.data をdict形式に分割
   data = mod.to_dict(event.postback.data)
+  user_id = event.source.user_id
+  question_param = data.get('question')
+  answer_param = data.get('answer')
+  print('{} / {} / {}'.format(user_id, question_param, answer_param))
+  if answer_param is not None:
+    ddb.register_answer(user_id, question_param, answer_param)
+
   next = data.get('next_question')
   # 1 : 結婚しているかどうか
   if next == "1":
