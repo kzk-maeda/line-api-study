@@ -18,6 +18,9 @@ var/
 /node_modules/
 /__pycache__/
 /flask/__pycache__/
+/flask/*/__pycache__/
+/flask/contents/__pycache__/
+/flask/library/__pycache__/
 
 # Serverless directories
 .serverless
