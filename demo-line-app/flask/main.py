@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 import contents.questions as q
 import contents.wellcome as wb
+import contents.result as rs
 import library.mod_event_data as mod
 import library.operate_dynamodb as ddb
 
@@ -175,6 +176,9 @@ def handle_postback(event):
   elif next == "7-2":
     contents = question.create_question_terms_of_service()
     send_line_api(event, contents)
+  elif next == "result":
+    result = rs.culc_result(user_id)
+    # send_line_api(event, result)
 
 # LIFFからPOSTを受け取った時に実行
 @app.route("/liff")

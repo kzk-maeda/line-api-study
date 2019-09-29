@@ -79,19 +79,19 @@ class QuestionClass():
       {
         "label_text": "はい",
         "data_text": "yes",
-        "next_question": "3-1"
+        "next_question": "2-1"
       },
       {
         "label_text": "いいえ",
         "data_text": "no",
-        "next_question": "2-1"
+        "next_question": "3-1"
       },
     ]
     self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
 
-  # 2-1 : (第１問がNoのとき)妊活期間
+  # 2-1 : (第１問がYesのとき)妊活期間
   def create_question_pregenancy_period(self):
     self.question_text = "どのくらいの期間妊活をしていますか？"
     self.question_label = "pregenancy_period"
@@ -550,12 +550,12 @@ class QuestionClass():
       {
         "label_text": "はい",
         "data_text": "yes",
-        "next_question": "7-2"
+        "next_question": "result"
       },
       {
         "label_text": "いいえ",
         "data_text": "no",
-        "next_question": "7-2"
+        "next_question": "result"
       },
     ]
     self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)

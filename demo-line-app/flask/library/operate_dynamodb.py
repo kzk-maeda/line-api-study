@@ -2,7 +2,7 @@ import boto3
 import json
 
 dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('ddb-diagnosis')
+table = dynamodb.Table('dev-ddb-diagnosis')
 
 def register_answer(id, key, value):
   # idのレコードがすでに存在するか確認
