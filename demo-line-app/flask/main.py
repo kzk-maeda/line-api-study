@@ -5,9 +5,9 @@ import contents.wellcome as wb
 import contents.result as rs
 import library.mod_event_data as mod
 import library.operate_dynamodb as ddb
+import library.operate_session as session
 
-from flask import Flask, request, abort, session
-from flask_dynamodb_sessions import Session
+from flask import Flask, request, abort
 
 from linebot import (
   LineBotApi, WebhookHandler
@@ -22,7 +22,6 @@ from linebot.models import (
 )
 
 app = Flask(__name__)
-Session(app)
 
 # Read Keys
 with open('env.json', 'r') as f:
@@ -64,19 +63,25 @@ def callback():
 def handle_message(event):
   # 受け取ったメッセージの内容を取得
   received_msg = event.message.text
-  # userIdからSessionデータを取得
-  user_session = session.get('user_id')
-  if user_session is None:
-    # Sessionに対象Userのデータを格納
+  # ユーザーIDを取得
+  user_id = event.source.user_id
+  print("message {} received from {}".format(received_msg, user_id))
 
-    # 診断ツール開始時のメッセージ
-    if received_msg == "診断ツール":
-      wellcome = wb.WellcomeClass()
-      contents = wellcome.create_wellcome_board()
-      
-      message = FlexSendMessage(alt_text="hello", contents=contents)
-    else:
-      message = TextSendMessage(text="Error")
+  # 診断ツール開始時のメッセージ
+  if received_msg == "診断ツール":
+    # Session Clear
+    session.clear_session(user_id)
+    # Create New Session
+    session.store_session(user_id)
+    # Create Contents
+    wellcome = wb.WellcomeClass()
+    contents = wellcome.create_wellcome_board()
+    
+    message = FlexSendMessage(alt_text="hello", contents=contents)
+  else:
+    # Update Sessions
+    session.store_session(user_id)
+    message = TextSendMessage(text="Error")
 
   line_bot_api.reply_message(
     event.reply_token,

@@ -18,7 +18,6 @@ def put(id, key, value):
   """
   DynamoDBにレコードを登録する関数
   @Param user_id ハッシュキー
-  @Param name レンジキー
   """
   result = table.put_item(
     Item = {
@@ -53,7 +52,6 @@ def query(id):
   """
   DynamoDBから検索する関数
   @Param user_id ハッシュキー
-  @Param name レンジキー
   @return 検索結果
   """
   result = table.get_item(
