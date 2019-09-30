@@ -6,7 +6,8 @@ import contents.result as rs
 import library.mod_event_data as mod
 import library.operate_dynamodb as ddb
 
-from flask import Flask, request, abort
+from flask import Flask, request, abort, session
+from flask_dynamodb_sessions import Session
 
 from linebot import (
   LineBotApi, WebhookHandler
@@ -21,7 +22,7 @@ from linebot.models import (
 )
 
 app = Flask(__name__)
-
+Session(app)
 
 # Read Keys
 with open('env.json', 'r') as f:
@@ -58,14 +59,24 @@ def callback():
   return 'OK'
 
 
-# 初回メッセージを受け取ったときに実行
+# Textメッセージを受け取ったときに実行
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+  # 受け取ったメッセージの内容を取得
+  received_msg = event.message.text
+  # userIdからSessionデータを取得
+  user_session = session.get('user_id')
+  if user_session is None:
+    # Sessionに対象Userのデータを格納
 
-  wellcome = wb.WellcomeClass()
-  contents = wellcome.create_wellcome_board()
-  
-  message = FlexSendMessage(alt_text="hello", contents=contents)
+    # 診断ツール開始時のメッセージ
+    if received_msg == "診断ツール":
+      wellcome = wb.WellcomeClass()
+      contents = wellcome.create_wellcome_board()
+      
+      message = FlexSendMessage(alt_text="hello", contents=contents)
+    else:
+      message = TextSendMessage(text="Error")
 
   line_bot_api.reply_message(
     event.reply_token,
