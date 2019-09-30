@@ -6,31 +6,39 @@ dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('dev-ddb-sessions')
 
 
-def store_session(user_id):
+def control_session(user_id, next):
   
   # 対象のuser_idのセッションレコードがあるかを確認
   session = query(user_id)
   print("Session : {}".format(session))
   if session is None:
     # Sessionが存在しない場合、新規に作成
-    print("session created for user {}".format(user_id))
-    put(user_id, "next_question", 1)
-    update(user_id, "updated", datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    create_new_session(user_id)
   else:
     updated = session.get("updated")
-    print("session updated date : {}".format(updated))
     session_updated = datetime.strptime(updated, '%Y-%m-%d %H:%M:%S') if updated is not None else datetime.now() - timedelta(30)
     # 前回のSession更新から１日経っている場合、Sessionを破棄して新たに作成
-    if datetime.now() - timedelta(1) > session_updated:
-      print("session created for user {}".format(user_id))
-      update(user_id, "next_question", 1)
-      update(user_id, "updated", datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-    # 前回のSession更新から１日以内である場合、next_questionを更新(increment)
+    if datetime.now() - timedelta(hours=24) > session_updated:
+      create_new_session(user_id)
+    # 前回のSession更新から１日以内である場合、next_questionを更新
     else:
-      print("session updated for user {}".format(user_id))
-      update(user_id, "next_question", session.get("next_question") + 1)
-      update(user_id, "updated", datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+      update_session(user_id, next)
 
+def get_session(user_id):
+  session = query(user_id)
+  return session
+
+
+def create_new_session(user_id):
+  print("session created for user {}".format(user_id))
+  put(user_id, "next_question", "1")
+  update(user_id, "updated", datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+
+def update_session(user_id, next):
+  print("session updated for user {}".format(user_id))
+  # update(user_id, "next_question", session.get("next_question") + 1)
+  update(user_id, "next_question", next)
+  update(user_id, "updated", datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 def clear_session(user_id):
   # 対象のSessionをクリアする関数
@@ -42,6 +50,9 @@ def clear_session(user_id):
     print("session cleared for {}".format(user_id))
     delete(user_id)
 
+"""
+Private Method
+"""
 
 def put(id, key, value):
   """
@@ -54,7 +65,7 @@ def put(id, key, value):
       key : value,
     }
   )
-  print(result)
+  # print(result)
   return result
 
 def update(id, key, value):
@@ -72,7 +83,7 @@ def update(id, key, value):
     },
     ReturnValues="UPDATED_NEW"
   )
-  print(result)
+  # print(result)
   return result
 
 def delete(id):
@@ -85,7 +96,7 @@ def delete(id):
       "user_id" : id
     }
   )
-  print(result)
+  # print(result)
   return result
 
 def query(id):
@@ -99,5 +110,5 @@ def query(id):
       'user_id' : id,
     }
   )
-  print(result.get("Item"))
+  # print(result.get("Item"))
   return result.get("Item")

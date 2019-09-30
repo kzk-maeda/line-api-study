@@ -50,7 +50,7 @@ class QuestionClass():
     return self.base_bubble
   
   # 共通コンポーネント
-  def generate_contents_list(self, question_label, contents_items):
+  def generate_button_contents_list(self, question_label, contents_items):
     self.question_label = question_label
     self.contents_list = []
     for i in contents_items:
@@ -70,6 +70,18 @@ class QuestionClass():
         }
       self.contents_list.append(self.component)
     return self.contents_list
+  
+  def generate_text_contents(self):
+    self.text_contents = "半角数字で入力してください"
+    self.contents_list = []
+
+    self.component = {
+      "type": "text",
+      "text": self.text_contents
+    }
+    self.contents_list.append(self.component)
+    
+    return self.contents_list
 
   # 1 : 結婚しているかどうか
   def create_question_marriged(self):
@@ -87,7 +99,7 @@ class QuestionClass():
         "next_question": "3-1"
       },
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
 
@@ -122,7 +134,7 @@ class QuestionClass():
         "next_question": "2-2"
       }
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
 
@@ -143,7 +155,7 @@ class QuestionClass():
         "next_question": "2-3"
       },
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
 
@@ -163,7 +175,7 @@ class QuestionClass():
         "next_question": "3-1"
       },
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
   
@@ -198,7 +210,7 @@ class QuestionClass():
         "next_question": "3-1"
       },
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
   
@@ -206,49 +218,7 @@ class QuestionClass():
   def create_question_age(self):
     self.question_text = "現在何歳ですか？"
     self.question_label = "age"
-    self.contents_items = [
-      {
-        "label_text": "−20歳",
-        "data_text": "20",
-        "next_question": "3-2"
-      },
-      {
-        "label_text": "21−25歳",
-        "data_text": "21-25",
-        "next_question": "3-2"
-      },
-      {
-        "label_text": "26−31歳",
-        "data_text": "26-31",
-        "next_question": "3-2"
-      },
-      {
-        "label_text": "32−35歳",
-        "data_text": "32-35",
-        "next_question": "3-2"
-      },
-      {
-        "label_text": "36−37歳",
-        "data_text": "36-37",
-        "next_question": "3-2"
-      },
-      {
-        "label_text": "38−39歳",
-        "data_text": "38-39",
-        "next_question": "3-2"
-      },
-      {
-        "label_text": "40−41歳",
-        "data_text": "40-41",
-        "next_question": "3-2"
-      },
-      {
-        "label_text": "42−歳",
-        "data_text": "42",
-        "next_question": "3-2"
-      }
-    ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_text_contents()
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
   
@@ -256,44 +226,7 @@ class QuestionClass():
   def create_question_height(self):
     self.question_text = "身長は何cmですか？"
     self.question_label = "height"
-    self.contents_items = [
-      {
-        "label_text": "-145cm",
-        "data_text": "-145",
-        "next_question": "3-3"
-      },
-      {
-        "label_text": "146-150cm",
-        "data_text": "146-150",
-        "next_question": "3-3"
-      },
-      {
-        "label_text": "151-155cm",
-        "data_text": "151-155",
-        "next_question": "3-3"
-      },
-      {
-        "label_text": "156-160cm",
-        "data_text": "156-160",
-        "next_question": "3-3"
-      },
-      {
-        "label_text": "161-165cm",
-        "data_text": "161-165",
-        "next_question": "3-3"
-      },
-      {
-        "label_text": "166-170cm",
-        "data_text": "166-170",
-        "next_question": "3-3"
-      },
-      {
-        "label_text": "171-cm",
-        "data_text": "171-",
-        "next_question": "3-3"
-      }
-    ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_text_contents()
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
 
@@ -301,44 +234,7 @@ class QuestionClass():
   def create_question_weight(self):
     self.question_text = "体重は何キロですか？"
     self.question_label = "weight"
-    self.contents_items = [
-      {
-        "label_text": "-40kg",
-        "data_text": "-40",
-        "next_question": "4"
-      },
-      {
-        "label_text": "41-45kg",
-        "data_text": "41-45",
-        "next_question": "4"
-      },
-      {
-        "label_text": "46-50kg",
-        "data_text": "46-50",
-        "next_question": "4"
-      },
-      {
-        "label_text": "51-55kg",
-        "data_text": "51-55",
-        "next_question": "4"
-      },
-      {
-        "label_text": "56-60kg",
-        "data_text": "56-60",
-        "next_question": "4"
-      },
-      {
-        "label_text": "61-65kg",
-        "data_text": "61-65",
-        "next_question": "4"
-      },
-      {
-        "label_text": "66-kg",
-        "data_text": "66-",
-        "next_question": "4"
-      }
-    ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_text_contents()
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
   
@@ -358,7 +254,7 @@ class QuestionClass():
         "next_question": "6-1"
       },
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
   
@@ -378,7 +274,7 @@ class QuestionClass():
         "next_question": "6-1"
       },
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
 
@@ -398,7 +294,7 @@ class QuestionClass():
         "next_question": "6-2"
       },
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
 
@@ -418,7 +314,7 @@ class QuestionClass():
         "next_question": "6-3"
       },
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
 
@@ -438,7 +334,7 @@ class QuestionClass():
         "next_question": "6-4"
       },
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
     
@@ -463,7 +359,7 @@ class QuestionClass():
         "next_question": "6-5"
       },
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
     
@@ -483,7 +379,7 @@ class QuestionClass():
         "next_question": "6-7"
       },
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
   
@@ -498,7 +394,7 @@ class QuestionClass():
         "next_question": "6-7"
       }
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
 
@@ -518,7 +414,7 @@ class QuestionClass():
         "next_question": "7-1"
       },
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
     
@@ -538,7 +434,7 @@ class QuestionClass():
         "next_question": "7-2"
       },
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
     
@@ -558,7 +454,7 @@ class QuestionClass():
         "next_question": "result"
       },
     ]
-    self.contents_list = self.generate_contents_list(self.question_label, self.contents_items)
+    self.contents_list = self.generate_button_contents_list(self.question_label, self.contents_items)
     self.contents = self.create_base(self.question_text, self.contents_list)
     return self.contents
     
