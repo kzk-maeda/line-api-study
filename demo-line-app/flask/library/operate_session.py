@@ -9,7 +9,7 @@ table = dynamodb.Table('dev-ddb-sessions')
 def control_session(user_id, next):
   
   # 対象のuser_idのセッションレコードがあるかを確認
-  session = query(user_id)
+  session = _query(user_id)
   print("Session : {}".format(session))
   if session is None:
     # Sessionが存在しない場合、新規に作成
@@ -25,36 +25,36 @@ def control_session(user_id, next):
       update_session(user_id, next)
 
 def get_session(user_id):
-  session = query(user_id)
+  session = _query(user_id)
   return session
 
 
 def create_new_session(user_id):
   print("session created for user {}".format(user_id))
-  put(user_id, "next_question", "1")
-  update(user_id, "updated", datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+  _put(user_id, "next_question", "1")
+  _update(user_id, "updated", datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 def update_session(user_id, next):
   print("session updated for user {}".format(user_id))
   # update(user_id, "next_question", session.get("next_question") + 1)
-  update(user_id, "next_question", next)
-  update(user_id, "updated", datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+  _update(user_id, "next_question", next)
+  _update(user_id, "updated", datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 def clear_session(user_id):
   # 対象のSessionをクリアする関数
-  session = query(user_id)
+  session = _query(user_id)
   if session is None:
     print("session is not found")
     pass
   else:
     print("session cleared for {}".format(user_id))
-    delete(user_id)
+    _delete(user_id)
 
 """
 Private Method
 """
 
-def put(id, key, value):
+def _put(id, key, value):
   """
   DynamoDBにレコードを登録する関数
   @Param user_id ハッシュキー
@@ -68,7 +68,7 @@ def put(id, key, value):
   # print(result)
   return result
 
-def update(id, key, value):
+def _update(id, key, value):
   """
   DynamoDBのレコードを更新する関数
   @Param user_id ハッシュキー
@@ -86,7 +86,7 @@ def update(id, key, value):
   # print(result)
   return result
 
-def delete(id):
+def _delete(id):
   """
   DynamoDBのレコードを削除する関数
   @Param user_id ハッシュキー
@@ -99,7 +99,7 @@ def delete(id):
   # print(result)
   return result
 
-def query(id):
+def _query(id):
   """
   DynamoDBから検索する関数
   @Param user_id ハッシュキー

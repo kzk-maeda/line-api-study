@@ -85,23 +85,35 @@ def handle_message(event):
     # Create Contents
     wellcome = wb.WellcomeClass()
     contents = wellcome.create_wellcome_board()
-  #TODO: TextMessageEventのValidation / DataStore
   else:
     # Get Sessions
     current_session = session.get_session(user_id)
     next = current_session.get("next_question")
+    # TODO: Validation
+
+    # Data Store
+    answer_data = {}
+    answer_data['answer'] = int(received_msg)
+    answer_data['updated'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
     # 3-2 : 身長
     if next == "3-2":
+      question_param = "age" # DDB格納用に一つ前の質問を格納
       contents = question.create_question_height()
       session.control_session(user_id, "3-3")
     # 3-3 : 体重
     elif next == "3-3":
+      question_param = "height" # DDB格納用に一つ前の質問を格納
       contents = question.create_question_weight()
       session.control_session(user_id, "4")
     # 4 : 妊娠経験
     elif next == "4":
+      question_param = "weight" # DDB格納用に一つ前の質問を格納
       contents = question.create_question_whether_pregenancy()
       session.control_session(user_id, "5")
+
+    # DDB更新
+    ddb.register_answer(user_id, question_param, answer_data)
 
   send_line_api(event, contents)
 
@@ -117,6 +129,8 @@ def handle_postback(event):
   question_param = data.get('question')
   answer_param = data.get('answer')
   print('{} / {} / {}'.format(user_id, question_param, answer_param))
+
+  # 回答をDBに保存
   if answer_param is not None:
     answer_data = {}
     answer_data['answer'] = answer_param
